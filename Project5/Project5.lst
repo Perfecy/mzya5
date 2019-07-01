@@ -1,0 +1,143 @@
+Microsoft (R) Macro Assembler Version 14.16.27031.1	    07/01/19 22:01:20
+Source1.asm						     Page 1 - 1
+
+
+				; Template for console application 
+				.586 
+				.MODEL flat, C
+				OPTION CASEMAP:NONE 
+				includelib legacy_stdio_definitions.lib
+
+				extern exit :proc
+				EXTERN printf :PROC
+				EXTERN scanf :PROC
+				EXTERN asm_out :PROC
+				EXTERN puts :proc
+
+ 00000000			.CONST 
+ 00000000 0D 0A 49 6E 70	MsgA DB 13,10,"Input your string1: ", 13, 10, 0 
+	   75 74 20 79 6F
+	   75 72 20 73 74
+	   72 69 6E 67 31
+	   3A 20 0D 0A 00
+ 00000019 0D 0A 49 6E 70	MsgB DB 13,10,"Input your string2: ", 13, 10, 0 
+	   75 74 20 79 6F
+	   75 72 20 73 74
+	   72 69 6E 67 32
+	   3A 20 0D 0A 00
+				.STACK ;Define a stack segment of 1KB (Not required for this example) 
+ 00000000			.DATA
+ 00000000 25 73 00		szRead BYTE "%s", 0
+ 00000003  0000007D [		str1 db 125 dup(?)
+	    00
+	   ]
+ 00000080  0000007D [		str2 db 125 dup(?) 
+	    00
+	   ]
+
+ 00000000			.DATA? 
+ 00000000  00000064 [		inbuf DB 100 DUP (?) 
+	    00
+	   ]
+
+ 00000000			.CODE ;Indicates the start of a code segment. 
+
+
+ 00000000			asm_in PROC, first:PTR DWORD , second:PTR DWORD
+ 00000003  8D 15 00000000 R	lea edx,MsgA
+ 00000009  52			push edx
+ 0000000A  E8 00000000 E	call puts
+ 0000000F  83 EC 04		sub esp,4
+
+ 00000012  8D 55 08		lea edx, first 
+ 00000015  52			push edx 
+ 00000016  8D 1D 00000000 R	lea ebx, szRead 
+ 0000001C  53			push ebx 
+ 0000001D  E8 00000000 E	call scanf 
+ 00000022  83 EC 08		sub esp, 8
+
+ 00000025  8D 15 00000019 R	lea edx,MsgB
+ 0000002B  52			push edx
+ 0000002C  E8 00000000 E	call puts
+ 00000031  83 EC 04		sub esp,4
+
+ 00000034  8D 55 0C		lea edx, second 
+ 00000037  52			push edx 
+ 00000038  8D 1D 00000000 R	lea ebx, szRead 
+ 0000003E  53			push ebx 
+ 0000003F  E8 00000000 E	call scanf 
+ 00000044  83 EC 08		sub esp, 8
+
+
+
+ 00000047  8D 55 08		lea edx, first 
+ 0000004A  52			push edx 
+ 0000004B  8D 5D 0C		lea ebx, second
+ 0000004E  53			push ebx
+ 0000004F  E8 00000000 E	call asm_out
+ 00000054  83 C4 08		add esp, 8
+
+
+
+
+
+ 00000057  33 C0		xor eax, eax 
+				ret 
+ 0000005B			asm_in ENDP 
+
+
+				End 
+Microsoft (R) Macro Assembler Version 14.16.27031.1	    07/01/19 22:01:20
+Source1.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CONST  . . . . . . . . . . . . .	32 Bit	 00000032 Para	  Public  'CONST'	 ReadOnly
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00000400 Para	  Stack	  'STACK'	 
+_BSS . . . . . . . . . . . . . .	32 Bit	 00000064 Para	  Public  'BSS'  
+_DATA  . . . . . . . . . . . . .	32 Bit	 000000FD Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000005B Para	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+asm_in . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000005B Public C
+  first  . . . . . . . . . . . .	DWord	 bp + 00000008
+  second . . . . . . . . . . . .	DWord	 bp + 0000000C
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000001h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+MsgA . . . . . . . . . . . . . .	Byte	 00000000 CONST	
+MsgB . . . . . . . . . . . . . .	Byte	 00000019 CONST	
+asm_out  . . . . . . . . . . . .	L Near	 00000000 FLAT	External C
+exit . . . . . . . . . . . . . .	L Near	 00000000 FLAT	External C
+inbuf  . . . . . . . . . . . . .	Byte	 00000000 _BSS	
+printf . . . . . . . . . . . . .	L Near	 00000000 FLAT	External C
+puts . . . . . . . . . . . . . .	L Near	 00000000 FLAT	External C
+scanf  . . . . . . . . . . . . .	L Near	 00000000 FLAT	External C
+str1 . . . . . . . . . . . . . .	Byte	 00000003 _DATA	
+str2 . . . . . . . . . . . . . .	Byte	 00000080 _DATA	
+szRead . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors
